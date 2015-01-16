@@ -57,6 +57,8 @@ void keyPressed(){
 
 }
 void mouseClicked(){
+  int x;
+  
   if (mouseX >= 409 && mouseX <= 409 + 219
     && mouseY >= 525 && mouseY <= 525 + 63){ // play
     mv.stop();
@@ -67,7 +69,14 @@ void mouseClicked(){
     && mouseY >= 525 && mouseY <= 525 + 63){ // stop
     mv.stop();
     state = 0;
-  } else 
+  } else
+ /* movie play Bar Controll*/
+ if(mouseX >= 418 && mouseX <= 418 + 522
+    && mouseY >= 365 && mouseY <= 402 && state == 1){
+      x = mouseX;
+      mv.jump( ((x - 418) / 522.0) * mv.duration() );
+      print("jump\n");
+  }else 
   /* movieList */
   if (mouseX >= 20 && mouseX <= 20 + 370){
     if (mouseY >= 15 && mouseY <= 15 + 580){
