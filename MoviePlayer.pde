@@ -121,6 +121,8 @@ void drawList(){
   fill(white);
 }
 void drawPlayzone(){
+  float position = 0;
+  
   // init
   fill(255);
   //
@@ -133,8 +135,10 @@ void drawPlayzone(){
   stroke(black);
   line(418, 399, 418 + 522, 399);
   if(state == 1){
+    position = mv.time() / mv.duration() * 522;
+    
     stroke(themeColor);
-    line(418, 399, 418 + 312, 399);
+    line(418, 399,  418 + position, 399);
   }
   // draw value
   ellipse(718 + 26 / 2, 367 + 26 / 2, 26, 26);
