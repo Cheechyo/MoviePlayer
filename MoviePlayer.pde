@@ -13,6 +13,9 @@ color themeColor;
 int list_scroll_y;
 boolean list_scroll_clicked;
 
+/*play Store*/
+int state = 0;
+
 /** delegate function */
 /* init or loop function */
 void setup(){
@@ -23,10 +26,13 @@ void setup(){
   themeColor = color(0, 150, 136);
   list_scroll_y = 0;
   list_scroll_clicked = false;
+  File folder = new File(dataPath(""));
+  filenames = folder.list();
   for (int i = 0; i < filenames.length; i++){
     if (filenames[i].indexOf("mp4") != -1){      //println(filenames[i]);
-      currentVideo = filenames[0];
+      currentVideo = filenames[i];
       mv = new Movie(this, currentVideo);
+      break;
     }
   }
 }
@@ -56,9 +62,11 @@ void mouseClicked(){
     mv.stop();
     mv = new Movie(this, currentVideo);
     mv.play();
+    state = 1;
   } else if (mouseX >= 729 && mouseX <= 729 + 219
     && mouseY >= 525 && mouseY <= 525 + 63){ // stop
     mv.stop();
+    state = 0;
   } else 
   /* movieList */
   if (mouseX >= 20 && mouseX <= 20 + 370){
@@ -73,6 +81,7 @@ void mouseClicked(){
               mv.stop();
               mv = new Movie(this, currentVideo);
               mv.play();
+              state = 1;
               break;
             }
             idx = idx - 1;
@@ -80,6 +89,7 @@ void mouseClicked(){
         }
       }
       println("currentVideo = " + currentVideo);
+      state = 1;
     }
   }
 }
@@ -122,8 +132,10 @@ void drawPlayzone(){
   // draw track
   stroke(black);
   line(418, 399, 418 + 522, 399);
-  stroke(themeColor);
-  line(418, 399, 418 + 312, 399);
+  if(state == 1){
+    stroke(themeColor);
+    line(418, 399, 418 + 312, 399);
+  }
   // draw value
   ellipse(718 + 26 / 2, 367 + 26 / 2, 26, 26);
   // draw comments
