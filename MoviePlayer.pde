@@ -122,6 +122,8 @@ void drawList(){
 }
 void drawPlayzone(){
   float position = 0;
+
+  position = mv.time() / mv.duration() * 522;
   
   // init
   fill(255);
@@ -134,14 +136,12 @@ void drawPlayzone(){
   // draw track
   stroke(black);
   line(418, 399, 418 + 522, 399);
-  if(state == 1){
-    position = mv.time() / mv.duration() * 522;
-    
+  if(state == 1){    
     stroke(themeColor);
     line(418, 399,  418 + position, 399);
   }
   // draw value
-  ellipse(718 + 26 / 2, 367 + 26 / 2, 26, 26);
+  ellipse(418 + 26 / 2 + position, 367 + 26 / 2, 26, 26);
   // draw comments
   fill(black);
   textAlign(LEFT, TOP);
