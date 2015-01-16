@@ -14,6 +14,9 @@ color themeColor;
 int list_scroll_y;
 boolean list_scroll_clicked;
 
+/*play Store*/
+int state = 0;
+
 /** delegate function */
 /* init or loop function */
 void setup(){
@@ -30,6 +33,7 @@ void setup(){
     if (filenames[i].indexOf("mp4") != -1){
       currentVideo = filenames[0];
       mv = new Movie(this, currentVideo);
+      break;
     }
   }
 }
@@ -54,15 +58,26 @@ void keyPressed(){
 
 }
 void mouseClicked(){
+  int x;
+  
   if (mouseX >= 409 && mouseX <= 409 + 219
     && mouseY >= 525 && mouseY <= 525 + 63){ // play
     mv.stop();
     mv = new Movie(this, currentVideo);
     mv.play();
+    state = 1;
   } else if (mouseX >= 729 && mouseX <= 729 + 219
     && mouseY >= 525 && mouseY <= 525 + 63){ // stop
     mv.stop();
-  } else 
+    state = 0;
+  } else
+ /* movie play Bar Controll*/
+ if(mouseX >= 418 && mouseX <= 418 + 522
+    && mouseY >= 365 && mouseY <= 402 && state == 1){
+      x = mouseX;
+      mv.jump( ((x - 418) / 522.0) * mv.duration() );
+      print("jump\n");
+  }else 
   /* movieList */
   if (mouseX >= 40 && mouseX <= 20 + 370){
     if (mouseY >= 15 && mouseY <= 15 + 580){
@@ -84,13 +99,14 @@ void mouseClicked(){
               mv.stop();
               mv = new Movie(this, currentVideo);
               mv.play();
+              state = 1;
               break;
             }
             idx = idx - 1;
           }
         }
       }
-      //println("currentVideo = " + currentVideo);
+      state = 1;
     }
   }
 }
@@ -122,6 +138,11 @@ void drawList(){
   fill(white);
 }
 void drawPlayzone(){
+  float lineposition = 0;
+  float ellipseXposition = 0;
+  
+  lineposition = mv.time() / mv.duration() * 522;
+  
   // init
   fill(255);
   //
@@ -133,10 +154,19 @@ void drawPlayzone(){
   // draw track
   stroke(black);
   line(418, 399, 418 + 522, 399);
-  stroke(themeColor);
-  line(418, 399, 418 + 312, 399);
+  if(state == 1){    
+    stroke(themeColor);
+    line(418, 399,  418 + lineposition, 399);
+  }
   // draw value
-  ellipse(718 + 26 / 2, 367 + 26 / 2, 26, 26);
+  ellipseXposition = 418 + lineposition;
+  if(ellipseXposition > 418 + 522 - 26/2){
+      ellipseXposition = 418 + 522 - 26/2;
+  }else if(ellipseXposition < 418 + 26/2){
+    ellipseXposition = 418 + 26/2;
+  }
+  
+  ellipse(ellipseXposition, 367 + 26 / 2 , 26, 26);
   // draw comments
   fill(black);
   textAlign(LEFT, TOP);
