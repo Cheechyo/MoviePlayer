@@ -121,9 +121,10 @@ void drawList(){
   fill(white);
 }
 void drawPlayzone(){
-  float position = 0;
-
-  position = mv.time() / mv.duration() * 522;
+  float lineposition = 0;
+  float ellipseXposition = 0;
+  
+  lineposition = mv.time() / mv.duration() * 522;
   
   // init
   fill(255);
@@ -138,10 +139,17 @@ void drawPlayzone(){
   line(418, 399, 418 + 522, 399);
   if(state == 1){    
     stroke(themeColor);
-    line(418, 399,  418 + position, 399);
+    line(418, 399,  418 + lineposition, 399);
   }
   // draw value
-  ellipse(418 + 26 / 2 + position, 367 + 26 / 2, 26, 26);
+  ellipseXposition = 418 + lineposition;
+  if(ellipseXposition > 418 + 522 - 26/2){
+      ellipseXposition = 418 + 522 - 26/2;
+  }else if(ellipseXposition < 418 + 26/2){
+    ellipseXposition = 418 + 26/2;
+  }
+  
+  ellipse(ellipseXposition, 367 + 26 / 2 , 26, 26);
   // draw comments
   fill(black);
   textAlign(LEFT, TOP);
