@@ -2,6 +2,7 @@ import processing.video.*;
 
 Movie mv;
 String currentVideo;
+int currentVideoIndex;
 String[] filenames;
 
 /* colors */
@@ -23,8 +24,10 @@ void setup(){
   themeColor = color(0, 150, 136);
   list_scroll_y = 0;
   list_scroll_clicked = false;
+  File folder = new File(dataPath(""));
+  filenames = folder.list();
   for (int i = 0; i < filenames.length; i++){
-    if (filenames[i].indexOf("mp4") != -1){      //println(filenames[i]);
+    if (filenames[i].indexOf("mp4") != -1){
       currentVideo = filenames[0];
       mv = new Movie(this, currentVideo);
     }
@@ -37,11 +40,11 @@ void draw(){
 }
 /* event handlers */
 void mousePressed(){
-  print("x : " + mouseX + " y : " + mouseY + "\n");
+  //print("x : " + mouseX + " y : " + mouseY + "\n");
   if (mouseX >= 16 && mouseX <= 16 + 18 + 18
       && mouseY >= 15 && mouseY <= 15 + 550){
     list_scroll_clicked = true;
-    print("clicked\n");
+    //print("clicked\n");
   }
 }
 void mouseReleased(){
@@ -61,10 +64,18 @@ void mouseClicked(){
     mv.stop();
   } else 
   /* movieList */
-  if (mouseX >= 20 && mouseX <= 20 + 370){
+  if (mouseX >= 40 && mouseX <= 20 + 370){
     if (mouseY >= 15 && mouseY <= 15 + 580){
-      int idx = mouseY / 55;
-      print("idx : " + idx);
+      // 25 + numOfMovies * 55 + (600 - list_height - 25) * list_scroll_y / 100
+      int numOfMovies = 0;
+      for (int i = 0; i < filenames.length; i++){
+        if (filenames[i].indexOf("mp4") != -1){
+          numOfMovies++;
+        }
+      }
+      int list_height = numOfMovies * 55;
+      int idx = (mouseY - 25 + (list_height + 25 - 600) * list_scroll_y / 100) / 55;
+      currentVideoIndex = idx;
       if (idx < filenames.length){
         for (int i = 0; i < filenames.length; i++){
           if (filenames[i].indexOf("mp4") != -1){
@@ -79,7 +90,7 @@ void mouseClicked(){
           }
         }
       }
-      println("currentVideo = " + currentVideo);
+      //println("currentVideo = " + currentVideo);
     }
   }
 }
@@ -96,7 +107,7 @@ void drawList(){
   // draw background panel
   fill(white);
   stroke(white);
-  rect(10, 9, 379, 580);
+  rect(10, 0, 379, 600);
   // draw scroll
   stroke(black);
   line(25, 15, 25+0, 15+550);
@@ -163,8 +174,21 @@ void showMovieList(){
   int numOfMovies = 0;
   for (int i = 0; i < filenames.length; i++){
     if (filenames[i].indexOf("mp4") != -1){
+      numOfMovies++;
+    }
+  }
+  int list_height = numOfMovies * 55;
+  numOfMovies = 0;
+  for (int i = 0; i < filenames.length; i++){
+    if (filenames[i].indexOf("mp4") != -1){
       //println(filenames[i]);
-      text(filenames[i], 95, 25 + numOfMovies * 55);
+      if (currentVideoIndex == numOfMovies){
+        stroke(white);
+        fill(240);
+        rect(40, 25 + numOfMovies * 55 + (600 - list_height - 25) * list_scroll_y / 100, 330, 55);
+      }
+      fill(black);
+      text(filenames[i], 95, 25 + numOfMovies * 55 + (600 - list_height - 25) * list_scroll_y / 100);
       numOfMovies++;
     }
   }
