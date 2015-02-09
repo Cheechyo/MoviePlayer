@@ -11,7 +11,12 @@ color themeColor;
 /*play Store*/
 int state = 0;
 
+<<<<<<< HEAD
 ItemListView listView;
+=======
+movieView movieView;
+
+>>>>>>> FETCH_HEAD
 /** delegate function */
 /* init or loop function */
 void setup(){
@@ -30,12 +35,16 @@ void setup(){
       break;
     }
   }
+<<<<<<< HEAD
   listView = new ItemListView();
+=======
+  movieView = new movieView(this);
+>>>>>>> FETCH_HEAD
 }
 void draw(){
-  drawUI();
+  movieView.drawUI();
   showMovieList();
-  playMovie();
+  movieView.playMovie();
 }
 /* event handlers */
 void mousePressed(){
@@ -48,8 +57,7 @@ void keyPressed(){
 
 }
 void mouseClicked(){
-  int x;
-  
+  movieView.mouseClicked();
   if (mouseX >= 409 && mouseX <= 409 + 219
     && mouseY >= 525 && mouseY <= 525 + 63){ // play
     mv.stop();
@@ -61,6 +69,7 @@ void mouseClicked(){
     mv.stop();
     state = 0;
   } else
+<<<<<<< HEAD
  /* movie play Bar Controll*/
  if(mouseX >= 418 && mouseX <= 418 + 522
     && mouseY >= 365 && mouseY <= 402 && state == 1){
@@ -73,66 +82,43 @@ void mouseClicked(){
     mv.stop();
     mv = new Movie(this, item);
     mv.play();
+=======
+  /* movieList */
+  if (mouseX >= 40 && mouseX <= 20 + 370){
+    if (mouseY >= 15 && mouseY <= 15 + 580){
+      // 25 + numOfMovies * 55 + (600 - list_height - 25) * list_scroll_y / 100
+      int numOfMovies = 0;
+      for (int i = 0; i < filenames.length; i++){
+        if (filenames[i].indexOf("mp4") != -1){
+          numOfMovies++;
+        }
+      }
+      int list_height = numOfMovies * 55;
+      int idx = (mouseY - 25 + (list_height + 25 - 600) * list_scroll_y / 100) / 55;
+      currentVideoIndex = idx;
+      if (idx < filenames.length){
+        for (int i = 0; i < filenames.length; i++){
+          if (filenames[i].indexOf("mp4") != -1){
+            if (idx == 0){
+              currentVideo = filenames[i];
+              mv.stop();
+              mv = new Movie(this, currentVideo);
+              mv.play();
+              state = 1;
+              break;
+            }
+            idx = idx - 1;
+          }
+        }
+      }
+      state = 1;
+    }
+>>>>>>> FETCH_HEAD
   }
 }
-/** custom function */
-void drawUI(){
-  fill(255);
-  colorMode(RGB,255);
-  drawList();
-  drawPlayzone();
-}
+
 void drawList(){
   listView.draw();
-}
-void drawPlayzone(){
-  float lineposition = 0;
-  float ellipseXposition = 0;
-  
-  lineposition = mv.time() / mv.duration() * 522;
-  
-  // init
-  fill(255);
-  //
-  rect(410, 9, 540, 580);
-  // draw videozone
-  fill(themeColor);
-  stroke(themeColor);
-  rect(410, 9, 540, 353);
-  // draw track
-  stroke(black);
-  line(418, 399, 418 + 522, 399);
-  if(state == 1){    
-    stroke(themeColor);
-    line(418, 399,  418 + lineposition, 399);
-  }
-  // draw value
-  ellipseXposition = 418 + lineposition;
-  if(ellipseXposition > 418 + 522 - 26/2){
-      ellipseXposition = 418 + 522 - 26/2;
-  }else if(ellipseXposition < 418 + 26/2){
-    ellipseXposition = 418 + 26/2;
-  }
-  
-  ellipse(ellipseXposition, 367 + 26 / 2 , 26, 26);
-  // draw comments
-  fill(black);
-  textAlign(LEFT, TOP);
-  textSize(24);
-  //stroke(black);
-  //rect(436,416,488,48);
-  text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc auctor gravida condimentum. Vestibulum urna dolor, accumsan quis est non, cursus sodales nunc."
-    , 436
-    , 416
-    , 488
-    , 120
-  );
-
-  // draw text Button
-  fill(themeColor);
-  textAlign(CENTER, CENTER);
-  text("PLAY", 454, 533, 127, 41);
-  text("STOP", 775, 533, 125, 41);
 }
 
 void showMovieList(){
@@ -147,9 +133,5 @@ void showMovieList(){
   listView.setListItems(filenames);
   listView.showMovieList();
 }
-void playMovie(){
-  if (mv.available()){
-    mv.read();
-  }
-  image(mv,410 + 1,9 + 1,540 - 2,354 - 2);
-}
+
+
