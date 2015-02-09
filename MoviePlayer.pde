@@ -11,12 +11,8 @@ color themeColor;
 /*play Store*/
 int state = 0;
 
-<<<<<<< HEAD
 ItemListView listView;
-=======
 movieView movieView;
-
->>>>>>> FETCH_HEAD
 /** delegate function */
 /* init or loop function */
 void setup(){
@@ -35,11 +31,8 @@ void setup(){
       break;
     }
   }
-<<<<<<< HEAD
   listView = new ItemListView();
-=======
   movieView = new movieView(this);
->>>>>>> FETCH_HEAD
 }
 void draw(){
   movieView.drawUI();
@@ -69,7 +62,6 @@ void mouseClicked(){
     mv.stop();
     state = 0;
   } else
-<<<<<<< HEAD
  /* movie play Bar Controll*/
  if(mouseX >= 418 && mouseX <= 418 + 522
     && mouseY >= 365 && mouseY <= 402 && state == 1){
@@ -82,38 +74,6 @@ void mouseClicked(){
     mv.stop();
     mv = new Movie(this, item);
     mv.play();
-=======
-  /* movieList */
-  if (mouseX >= 40 && mouseX <= 20 + 370){
-    if (mouseY >= 15 && mouseY <= 15 + 580){
-      // 25 + numOfMovies * 55 + (600 - list_height - 25) * list_scroll_y / 100
-      int numOfMovies = 0;
-      for (int i = 0; i < filenames.length; i++){
-        if (filenames[i].indexOf("mp4") != -1){
-          numOfMovies++;
-        }
-      }
-      int list_height = numOfMovies * 55;
-      int idx = (mouseY - 25 + (list_height + 25 - 600) * list_scroll_y / 100) / 55;
-      currentVideoIndex = idx;
-      if (idx < filenames.length){
-        for (int i = 0; i < filenames.length; i++){
-          if (filenames[i].indexOf("mp4") != -1){
-            if (idx == 0){
-              currentVideo = filenames[i];
-              mv.stop();
-              mv = new Movie(this, currentVideo);
-              mv.play();
-              state = 1;
-              break;
-            }
-            idx = idx - 1;
-          }
-        }
-      }
-      state = 1;
-    }
->>>>>>> FETCH_HEAD
   }
 }
 
